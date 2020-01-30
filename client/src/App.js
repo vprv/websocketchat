@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import './App.css'
 
 class App extends React.Component {
@@ -8,8 +8,12 @@ class App extends React.Component {
     messages: []
   }
 
-  ws = new WebSocket(`ws://${window.location.hostname}:5000`);
-  // ws = new WebSocket(`ws://localhost:5000`);
+  BASE_URL = window.location.hostname
+  PORT = window.location.port
+
+  webSocketUrl = `ws://${this.BASE_URL}:${this.PORT}`
+  ws = new WebSocket(this.webSocketUrl);
+
   componentDidMount() {
     let ws = this.ws
     ws.onopen = function () {
