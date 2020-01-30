@@ -5,10 +5,15 @@ class App extends React.Component {
   state = {
     userName: "",
     userText: "",
-    messages: []
+    data: {
+      onlineCount: 0,
+      messages: []
+    }
   }
 
   BASE_URL = window.location.hostname
+  //dev mode 5000
+  //production window.location.port
   PORT = window.location.port
 
   webSocketUrl = `ws://${this.BASE_URL}:${this.PORT}`
@@ -21,8 +26,8 @@ class App extends React.Component {
 
     }
     ws.onmessage = (event) => {
-      // console.log('server answer',event.data);
-      this.setState({messages: JSON.parse(event.data)})
+      console.log('server answer',event.data);
+      this.setState({data: {...this.state.data, ...JSON.parse(event.data)} })
     }
   }
 
@@ -56,14 +61,14 @@ class App extends React.Component {
     return (
       <div className="App">
         <div>
-          Chat
+          {`Online ${this.state.data.onlineCount}`}
         </div>
 
         <div>
           <div id={"style-1"} className="ChatLines">
           {
-            this.state.messages.length > 0 ?
-            this.state.messages.map((item, index) => {
+            this.state.data.messages.length > 0 ?
+            this.state.data.messages.map((item, index) => {
               return (
                 <div key={index}>
                   <span><b>{item.userName}</b> {item.message}</span>
